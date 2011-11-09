@@ -27,7 +27,7 @@ module Travis
             if !self[:install].nil?
               self[:install]
             elsif package_exists?
-              "npm install #{npm_args}".strip
+              "npm install --dev #{npm_args}".strip
             else
               nil
             end
