@@ -21,24 +21,23 @@ vms:
     - travis_build_environment
     - apt
     - build-essential
-    - scons
     - networking_basic
     - openssl
     - sysctl
     - libyaml
     - emacs::nox
-    - vim
     - timetrap
     - git
+    - sqlite
+    - postgresql::client
+    - mysql::client
+    - php::multi
+    - postgresql::server
+    - mysql::server
+    - scons
     - libqt4
     - libv8
     - nodejs::multi
-    - php::multi
-    - sqlite
-    - postgresql::client
-    - postgresql::server
-    - mysql::client
-    - mysql::server
     - redis
     - riak
     - mongodb
@@ -47,3 +46,4 @@ vms:
     - imagemagick
     - sphinx::all
     - xserver
+    - vim
