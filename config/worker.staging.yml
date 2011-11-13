@@ -32,10 +32,6 @@ vms:
         rbx: rbx-head
         rbx-2.0: rbx-head
         rbx-2.0.0pre: rbx-head
-    nodejs:
-      versions:
-        - 0.4.11
-        - 0.5.5
     mysql:
       server_root_password: ""
     postgresql:
