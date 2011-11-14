@@ -51,6 +51,7 @@ vms:
     - redis
     - riak
     - mongodb
+    - couchdb
     - memcached
     - rabbitmq::with_management_plugin
     - imagemagick
