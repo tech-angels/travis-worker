@@ -17,6 +17,13 @@ vms:
       max_connections: 256
     travis_build_environment:
       use_tmpfs_for_builds: true
+    rvm:
+      default: 1.9.3
+      rubies:
+      - name: 1.9.3
+      gems:
+        - bundler
+        - rake
   recipes:
     - travis_build_environment
     - apt
@@ -38,6 +45,9 @@ vms:
     - libqt4
     - libv8
     - nodejs::multi
+    - java
+    - rvm
+    - rvm::multi
     - redis
     - riak
     - mongodb
