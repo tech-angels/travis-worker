@@ -2,9 +2,9 @@ queue: node_and_php
 shell:
   buffer: 2.0
 timeouts:
-  install: 600
-  before_script: 600
-  script: 7200
+  install: 240
+  before_script: 240
+  script: 720
 vms:
   count: 5
   base: lucid32_old
