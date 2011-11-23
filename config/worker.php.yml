@@ -1,9 +1,9 @@
-queue: node
+queue: php
 shell:
   buffer: 2.0
 timeouts:
-  install: 380
-  before_script: 380
+  install: 600
+  before_script: 600
   script: 720
 vms:
   count: 5
