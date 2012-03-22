@@ -31,6 +31,13 @@ module Travis
           end
         end
 
+        # Configure the vim.
+        #
+        # Allows adding configuration at a later point, e.g. adding timeouts from .travis.yml
+        def configure(config)
+          self.config.merge!(config)
+        end
+
         # Connects to the remote host.
         #
         # Returns the Net::SSH::Shell
