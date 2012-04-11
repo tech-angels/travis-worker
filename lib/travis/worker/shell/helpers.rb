@@ -35,12 +35,12 @@ module Travis
         #
         # command - The command to be executed.
         # options - Optional Hash options (default: {}):
-        #           :stage - The command stage, used to evaluate the timeout.
-        #           :echo  - true or false if the command should be echod to the log
+        #           :timeout - number of seconds after which to timeout the command.
+        #           :echo    - true or false if the command should be echod to the log
         #
         # Returns true if the command completed successfully, false if it failed.
         def execute(command, options = {})
-          with_timeout(command, options[:stage]) do
+          with_timeout(command, options[:timeout]) do
             command = echoize(command) unless options[:echo] == false
             exec(command) { |p, data| buffer << data } == 0
           end
@@ -93,22 +93,13 @@ module Travis
           cmd.match(/^(\S+=\S+ )*(.*)/).to_a[1..-1].map { |token| token.strip if token }
         end
 
-        def with_timeout(command, stage, &block)
-          seconds = timeout(stage)
+        def with_timeout(command, seconds, &block)
           begin
             Timeout.timeout(seconds, &block)
           rescue Timeout::Error => e
-            raise Travis::Build::CommandTimeout.new(stage, command, seconds)
+            raise Travis::Build::CommandTimeout.new(command, seconds)
           end
         end
-
-       def timeout(stage)
-         if stage.is_a?(Numeric)
-           stage
-         else
-           config.timeouts[stage || :default]
-         end
-       end
       end
     end
   end

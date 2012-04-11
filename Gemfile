@@ -11,7 +11,7 @@ def local_or_remote_gem(name, options = Hash.new)
   end
 end
 
-local_or_remote_gem 'travis-build',     :git => 'https://github.com/travis-ci/travis-build.git'
+local_or_remote_gem 'travis-build',     :git => 'https://github.com/travis-ci/travis-build.git', :branch => 'timeouts'
 local_or_remote_gem 'travis-support',   :git => 'https://github.com/travis-ci/travis-support.git'
 
 gem 'vagrant',          '~> 1.0.0'

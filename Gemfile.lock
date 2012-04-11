@@ -7,13 +7,14 @@ GIT
 
 GIT
   remote: https://github.com/travis-ci/travis-build.git
-  revision: 3027b713cb8a5b6a7b28aa52558741d0da4bbff3
+  revision: 867a5e5f9c1a05aeaa58de7c91901618c357ba60
+  branch: timeouts
   specs:
     travis-build (0.2.0)
 
 GIT
   remote: https://github.com/travis-ci/travis-support.git
-  revision: 6023cb08b40d334804c06702293e7c74e0adf4d4
+  revision: 9f18805837314321d75ac24ca90705fcdb91b855
   specs:
     travis-support (0.0.1)
 
