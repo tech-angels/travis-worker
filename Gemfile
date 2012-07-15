@@ -14,7 +14,7 @@ end
 local_or_remote_gem 'travis-build',     :git => 'https://github.com/travis-ci/travis-build'
 local_or_remote_gem 'travis-support',   :git => 'https://github.com/travis-ci/travis-support'
 
-gem 'vagrant',          '~> 1.0.2'
+gem 'vagrant',          :github => 'joshk/vagrant'
 gem 'vagrant-vbguest'
 
 gem 'thor',             '~> 0.14.6'
@@ -27,7 +27,7 @@ gem 'json'
 
 platform :jruby do
   gem 'hot_bunnies',    '~> 1.3.3'
-  gem 'net-ssh-shell',  :git => 'git://github.com/joshk/net-ssh-shell'
+  gem 'net-ssh-shell',  :github => 'joshk/net-ssh-shell'
   gem 'jruby-openssl',  '~> 0.7.4'
 end
 
