@@ -9,6 +9,13 @@ module Travis
         include Shell::Helpers
         include Logging
 
+        # hard timeout for all SSH operations. VM network interfaces sometimes go
+        # down when overwhelmed by hundreds of simultaneous requests by tools like pip
+        # (the evidence is in dmesg logs). When that happens, net/ssh never times out
+        # the connection and it hangs up forever. We need to guard against that. MK.
+        HARD_COMMAND_TIMEOUT = 60 * 30
+
+
         log_header { "#{name}:session" }
 
         attr_reader :name, :config, :shell
@@ -67,35 +74,41 @@ module Travis
 
         protected
 
-          # Internal: Sets up and returns a buffer to use for the entire ssh session when code
-          # is executed.
-          def buffer
-            @buffer ||= Buffer.new(config.buffer) do |string|
-              @on_output.call(string, :header => log_header) if @on_output
-            end
+        # Internal: Sets up and returns a buffer to use for the entire ssh session when code
+        # is executed.
+        def buffer
+          @buffer ||= Buffer.new(config.buffer) do |string|
+            @on_output.call(string, :header => log_header) if @on_output
           end
+        end
 
-          # Internal: Executes a command using the SSH Shell.
-          #
-          # This is where the real SSH shell work is done. The command is run along with
-          # callbacks setup for when data is returned. The exit status is also captured
-          # when the command has finished running.
-          #
-          # command - The command to be executed.
-          # block   - A block which will be called when output or error output is received
-          #           from the shell command.
-          #
-          # Returns the exit status (0 or 1)
-          def exec(command, &on_output)
-            status = nil
-            shell.execute(command) do |process|
-              process.on_output(&on_output)
-              process.on_error_output(&on_output)
-              process.on_finish { |p| status = p.exit_status }
+        # Internal: Executes a command using the SSH Shell.
+        #
+        # This is where the real SSH shell work is done. The command is run along with
+        # callbacks setup for when data is returned. The exit status is also captured
+        # when the command has finished running.
+        #
+        # command - The command to be executed.
+        # block   - A block which will be called when output or error output is received
+        #           from the shell command.
+        #
+        # Returns the exit status (0 or greater)
+        def exec(command, &on_output)
+          begin
+            Timeout.timeout(HARD_COMMAND_TIMEOUT) do
+              status = nil
+              shell.execute(command) do |process|
+                process.on_output(&on_output)
+                process.on_error_output(&on_output)
+                process.on_finish { |p| status = p.exit_status }
+              end
+              shell.session.loop(1) { status.nil? }
+              status
             end
-            shell.session.loop(1) { status.nil? }
-            status
+          rescue Timeout::Error => e
+            255
           end
+        end
       end
     end
   end
