@@ -17,6 +17,8 @@ Vagrant::Config.run do |c|
         "--name",     name,
         "--nictype1", "Am79C973"
       ]
+      # see https://github.com/mitchellh/vagrant/issues/912
+      box.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
     end
   end
 end
