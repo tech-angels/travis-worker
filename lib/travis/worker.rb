@@ -169,7 +169,6 @@ module Travis
     end
 
     def process(message, payload)
-      Thread.current[:log_header] = name
       work(message, payload)
     rescue Errno::ECONNREFUSED, Exception => error
       # puts error.message, error.backtrace
@@ -179,6 +178,8 @@ module Travis
     def work(message, payload)
       prepare(payload)
 
+      info "starting job slug:#{self.payload['repository']['slug']} id:#{self.payload['job']['id']}"
+
       build_log_streamer = log_streamer(message, payload)
 
       build = Build.create(vm, vm.shell, build_log_streamer, self.payload, config)
@@ -186,7 +187,7 @@ module Travis
 
       finish(message)
     rescue BuildStallTimeoutError => e
-      error "The job (slug:#{self.payload['repository']['slug']} id:#{self.payload['job']['id']}) stalled and was requeued"
+      error "the job (slug:#{self.payload['repository']['slug']} id:#{self.payload['job']['id']}) stalled and was requeued"
       finish(message, :requeue => true)
     end
     log :work, :as => :debug
@@ -197,7 +198,7 @@ module Travis
       Travis.uuid = @payload.delete(:uuid)
       set :working
     end
-    log :prepare
+    log :prepare, :as => :debug
 
     def finish(message, opts = {})
       unless opts[:requeue]
@@ -221,7 +222,7 @@ module Travis
       stop
       set :errored
     end
-    log :error
+    log :error, :as => :debug
 
     def log_streamer(message, payload)
       log_routing_key = log_streamer_routing_key_for(message, payload)
@@ -241,8 +242,10 @@ module Travis
     end
 
     def hard_timeout(build)
-      info "running a HardTimeout (40mins) around #{build.inspect}"
-      HardTimeout.timeout(2400) { build.run }
+      HardTimeout.timeout(2400) do
+        Thread.current[:log_header] = name
+        build.run
+      end
     rescue Timeout::Error => e
       build.vm_stall
       raise BuildStallTimeoutError, 'The VM stalled and the hardtimeout fired'
