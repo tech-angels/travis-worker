@@ -27,12 +27,6 @@ module Travis
         install_signal_traps
         start(options)
         heart.beat
-        at_exit {
-          begin
-            disconnect
-          rescue
-          end
-        }
       end
       log :boot
 
