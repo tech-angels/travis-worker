@@ -27,8 +27,12 @@ module Travis
         install_signal_traps
         start(options)
         heart.beat
-        # remove this for now, there seem to be bugs with this and it can leave vms in an unusable state
-        # Command.subscribe(self, config, broker_connection.create_channel)
+        at_exit {
+          begin
+            disconnect
+          rescue
+          end
+        }
       end
       log :boot
 
