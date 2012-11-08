@@ -27,7 +27,7 @@ module Travis
                 pump!
               rescue Exception => e
                 puts e.message, e.backtrace
-                break
+                exit
               end
             end
           end
