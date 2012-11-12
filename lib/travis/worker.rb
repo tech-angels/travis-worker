@@ -180,12 +180,16 @@ module Travis
 
       info "starting job slug:#{self.payload['repository']['slug']} id:#{self.payload['job']['id']}"
 
-      @build_log_streamer = log_streamer(message, payload)
+      build_log_streamer = log_streamer(message, payload)
 
-      build = Build.create(vm, vm.shell, @build_log_streamer, self.payload, config)
-      hard_timeout(build)
+      begin
+        build = Build.create(vm, vm.shell, @build_log_streamer, self.payload, config)
+        hard_timeout(build)
 
-      finish(message)
+        finish(message)
+      ensure
+        build_log_streamer.close
+      end
     rescue BuildStallTimeoutError => e
       error "the job (slug:#{self.payload['repository']['slug']} id:#{self.payload['job']['id']}) stalled and was requeued"
       finish(message, :requeue => true)
@@ -212,7 +216,6 @@ module Travis
       elsif stopping?
         set :stopped
       end
-      @build_log_streamer.close if @build_log_streamer
     end
     log :finish, :params => false
 
