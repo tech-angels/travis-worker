@@ -212,7 +212,7 @@ module Travis
       elsif stopping?
         set :stopped
       end
-      @build_log_streamer.close
+      @build_log_streamer.close if @build_log_streamer
     end
     log :finish, :params => false
 
