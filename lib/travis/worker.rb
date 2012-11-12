@@ -180,9 +180,9 @@ module Travis
 
       info "starting job slug:#{self.payload['repository']['slug']} id:#{self.payload['job']['id']}"
 
-      build_log_streamer = log_streamer(message, payload)
+      @build_log_streamer = log_streamer(message, payload)
 
-      build = Build.create(vm, vm.shell, build_log_streamer, self.payload, config)
+      build = Build.create(vm, vm.shell, @build_log_streamer, self.payload, config)
       hard_timeout(build)
 
       finish(message)
@@ -212,6 +212,7 @@ module Travis
       elsif stopping?
         set :stopped
       end
+      @build_log_streamer.close
     end
     log :finish, :params => false
 
