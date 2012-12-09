@@ -52,7 +52,7 @@ GEM
     ffi (1.1.5)
     ffi (1.1.5-java)
     hashr (0.0.22)
-    hot_bunnies (1.4.0.pre4-java)
+    hot_bunnies (1.4.0-java)
     i18n (0.6.0)
     jruby-openssl (0.7.7)
       bouncy-castle-java (>= 1.5.0146.1)
@@ -89,11 +89,12 @@ GEM
 
 PLATFORMS
   java
+  ruby
 
 DEPENDENCIES
   faraday (~> 0.7.5)
   hashr (~> 0.0.18)
-  hot_bunnies (~> 1.4.0.pre4)
+  hot_bunnies (~> 1.4.0)
   jruby-openssl (~> 0.7.4)
   json
   mocha (~> 0.11.0)
