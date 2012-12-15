@@ -11,7 +11,7 @@ def local_or_remote_gem(name, options = Hash.new)
   end
 end
 
-local_or_remote_gem 'travis-build',     :git => 'https://github.com/travis-ci/travis-build'
+local_or_remote_gem 'travis-build',     :git => 'https://github.com/travis-ci/travis-build', :ref => 'mm-retry-on-after-script'
 local_or_remote_gem 'travis-support',   :git => 'https://github.com/travis-ci/travis-support'
 
 gem 'vagrant',          :git => 'https://github.com/joshk/vagrant', :branch => '1-0-stable'
