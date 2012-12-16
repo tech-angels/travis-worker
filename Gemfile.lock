@@ -23,7 +23,6 @@ GIT
 GIT
   remote: https://github.com/travis-ci/travis-build
   revision: 84f98b937d26a322d5325fac1fc707faf724af16
-  ref: mm-retry-on-after-script
   specs:
     travis-build (0.2.0)
 
