@@ -25,12 +25,12 @@ gem 'hashr',            '~> 0.0.18'
 gem 'multi_json',       '~> 1.2.0'
 gem 'json'
 
-gem 'net-ssh',          '2.5.2' # 2.6.x has 1.9 specific code in key_factory.rb
+# gem 'net-ssh',          '2.5.2' # 2.6.x has 1.9 specific code in key_factory.rb
 
 platform :jruby do
   gem 'hot_bunnies',    '~> 1.4.0'
   gem 'net-ssh-shell',  :git => 'git://github.com/joshk/net-ssh-shell'
-  gem 'jruby-openssl',  '~> 0.7.4'
+  gem 'jruby-openssl'#,  '~> 0.7.4'
 end
 
 group :test do
