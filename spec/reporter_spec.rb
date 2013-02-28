@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'travis/worker/reporter'
 
 describe Travis::Worker::Reporter do
   include_context 'hot_bunnies connection'
